@@ -49,11 +49,26 @@ func (di *DI) StartBot() {
 
 	gitlabIssuesManagerBot := bot.New(botApi)
 	gitlabIssuesManagerBot.RegisterCmdView(
-		"start",
+		"/start",
 		views.ViewCmdStart(),
 	)
+	gitlabIssuesManagerBot.RegisterCmdView(
+		"/setproject",
+		views.ViewCmdSetCurrentProject(),
+	)
+	gitlabIssuesManagerBot.RegisterCmdView(
+		"/getproject",
+		views.ViewCmdGetCurrentProject(),
+	)
+	gitlabIssuesManagerBot.RegisterCmdView(
+		"/help",
+		views.ViewCmdHelp(),
+	)
 
-	if err := gitlabIssuesManagerBot.Run(ctx, di.appCfg.Gitlab.Url, di.appCfg.Gitlab.Token); err != nil {
+	if err := gitlabIssuesManagerBot.Run(
+		ctx, di.appCfg.Gitlab.BaseUrl,
+		di.appCfg.Gitlab.Token,
+	); err != nil {
 		log.Printf("[ERROR] failed to run bot: %v", err)
 	}
 }

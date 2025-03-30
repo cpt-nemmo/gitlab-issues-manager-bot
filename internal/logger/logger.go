@@ -15,11 +15,6 @@ func Enter(method string) *zap.Logger {
 	return l
 }
 
-func Exit(log *zap.Logger, method string, err error) {
-	if err != nil {
-		log.Error(fmt.Sprintf("exit %s", method), zap.Error(err))
-		return
-	}
-
+func Exit(log *zap.Logger, method string) {
 	log.Info(fmt.Sprintf("exit %s", method))
 }

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"gitlab-issues-manager/internal/gitlab-api/projects"
 	"strings"
 )
 
@@ -38,4 +39,12 @@ func ParseIssue(s string) (*Issue, error) {
 		Title:       result,
 		Description: result2,
 	}, nil
+}
+
+func ConvertFromSliceToMap(slice []projects.Project) map[string]int {
+	mapa := make(map[string]int, len(slice))
+	for _, structura := range slice {
+		mapa[structura.Name] = structura.Id
+	}
+	return mapa
 }
