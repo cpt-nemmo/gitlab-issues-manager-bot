@@ -3,6 +3,7 @@ package projects
 import (
 	"context"
 	"encoding/json"
+	constants2 "gitlab-issues-manager/internal/gitlab-api/constants"
 	"gitlab-issues-manager/internal/logger"
 	"io"
 	"log"
@@ -25,6 +26,11 @@ func GetAllProjects(ctx context.Context, gitlabBaseUrl, gitlabToken string) ([]P
 		return nil, err
 	}
 	req.Header.Set("PRIVATE-TOKEN", gitlabToken)
+
+	q := req.URL.Query()
+	q.Add("per_page", constants2.PAGINATION)
+	req.URL.RawQuery = q.Encode()
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

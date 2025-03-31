@@ -92,7 +92,10 @@ func handleText(
 			}
 
 			if b.CurrentProject.Id == 0 {
-				b.CurrentProject.Id = constants2.DEFAULT_PROJECT_ID
+				if err := message_sender.Send("⛔️Требуется сначала установить проект!⛔️", b.Api, update); err != nil {
+					return err
+				}
+				return nil
 			}
 
 			ctx, cancel := context.WithTimeout(context.Background(), constants2.TIMEOUT*time.Second)
@@ -120,7 +123,7 @@ func handleText(
 		if exist {
 			b.CurrentProject.Id = b.Projects[text]
 			b.CurrentProject.Name = text
-			err := message_sender.DeleteMenu(b.Api, fmt.Sprintf("🌟 Вы выбрали проект: <b>%v</b>", text), update.Message.Chat.ID)
+			err := message_sender.DeleteMenu(b.Api, fmt.Sprintf("🌟Вы выбрали проект:\n <b>%v</b>", text), update.Message.Chat.ID)
 			if err != nil {
 				return err
 			}

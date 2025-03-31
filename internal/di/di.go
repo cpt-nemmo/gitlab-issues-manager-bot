@@ -64,6 +64,10 @@ func (di *DI) StartBot() {
 		"/help",
 		views.ViewCmdHelp(),
 	)
+	gitlabIssuesManagerBot.RegisterCmdView(
+		"/statistic",
+		views.ViewCmdStatistics(),
+	)
 
 	if err := gitlabIssuesManagerBot.Run(
 		ctx, di.appCfg.Gitlab.BaseUrl,

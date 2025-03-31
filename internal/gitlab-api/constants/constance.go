@@ -1,7 +1,7 @@
 package constants
 
 const (
-	LABELS             = "backlog"
-	DEFAULT_PROJECT_ID = 3
-	TIMEOUT            = 20
+	LABELS     = "backlog"
+	TIMEOUT    = 20
+	PAGINATION = "200"
 )

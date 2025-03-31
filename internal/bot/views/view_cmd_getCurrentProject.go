@@ -23,7 +23,14 @@ func ViewCmdGetCurrentProject() bot.ViewFunc {
 		}
 
 		currentProject := b.CurrentProject.Name
-		msgText := fmt.Sprintf("🌚 Текущий проект: <b>%s</b>", currentProject)
+		if currentProject == "" {
+			if err := message_sender.Send("⛔️Требуется сначала установить проект!⛔️", b.Api, update); err != nil {
+				return err
+			}
+			return nil
+		}
+
+		msgText := fmt.Sprintf("🌚Текущий проект:\n <b>%s</b>", currentProject)
 
 		if err := message_sender.SendHTML(msgText, b.Api, update); err != nil {
 			log.Printf("[ERROR] error while sending text msg: %v", err)

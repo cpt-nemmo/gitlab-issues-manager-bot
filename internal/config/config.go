@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"github.com/joho/godotenv"
-	"gitlab-issues-manager/internal/gitlab-api/constants"
 	"log"
 	"os"
 )
@@ -52,8 +51,6 @@ func (cfg *AppConfig) LoadAppConfig() error {
 		return errors.New("gitlab token is not set")
 	}
 	cfg.Gitlab.Token = gitlabToken
-
-	cfg.GitLabProjects.DefaultProjectId = constants.DEFAULT_PROJECT_ID
 
 	return nil
 }
