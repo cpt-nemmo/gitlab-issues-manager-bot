@@ -203,7 +203,14 @@ func (b *Bot) handleUpdate(
 	switch {
 	// Handle messages
 	case update.Message != nil:
-		handleMessage(b, update, gitlabBaseUrl, gitlabToken)
-		break
+		fmt.Println("CHAT ID: ", update.Message.Chat.ID)
+		if update.Message.Chat.ID < 0 && update.Message.Chat.ID != -1002576766431 {
+			if err := message_sender.Send("⛔️Данный чат не авторизован!⛔️", b.Api, update); err != nil {
+				return
+			}
+		} else {
+			handleMessage(b, update, gitlabBaseUrl, gitlabToken)
+			break
+		}
 	}
 }
