@@ -98,7 +98,7 @@ func handleText(
 			ctx, cancel := context.WithTimeout(context.Background(), constants2.TIMEOUT*time.Second)
 			defer cancel()
 			err = message_sender.Send("⏳ Делаем запрос на гитлаб...", b.Api, update)
-			err = issues.CreateIssue(
+			url, err := issues.CreateIssue(
 				ctx,
 				issue.Description,
 				issue.Title,
@@ -111,7 +111,7 @@ func handleText(
 				err = message_sender.Send("Сетевая ошибка при запросе на ваш гитлаб. Соре... 😔", b.Api, update)
 				return err
 			}
-			if err := message_sender.SendHTML(fmt.Sprintf("☑️ Исуйка была записана в проект: <b><i>%v</i></b>", b.CurrentProject.Name), b.Api, update); err != nil {
+			if err := message_sender.SendHTML(fmt.Sprintf("☑️ Исуйка была записана в проект: <b><i>%v</i></b> \n\nСсылка на нее: %v", b.CurrentProject.Name, url), b.Api, update); err != nil {
 				log.Printf("[ERROR] error while sending text msg: %v", err)
 			}
 		}

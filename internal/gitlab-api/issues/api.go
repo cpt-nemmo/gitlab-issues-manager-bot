@@ -2,6 +2,7 @@ package issues
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"gitlab-issues-manager/internal/gitlab-api/constants"
 	"gitlab-issues-manager/internal/logger"
@@ -10,7 +11,11 @@ import (
 	"net/http"
 )
 
-func CreateIssue(ctx context.Context, desc, title, gitlabBaseUrl, gitlabToken string, currentProjID int) error {
+type GitlabResponse struct {
+	Url string `json:"web_url"`
+}
+
+func CreateIssue(ctx context.Context, desc, title, gitlabBaseUrl, gitlabToken string, currentProjID int) (string, error) {
 	l := logger.Enter("gitlab-api.issues.api.CreateIssue")
 	defer func() { logger.Exit(l, "gitlab-api.issues.api.CreateIssue") }()
 
@@ -18,7 +23,7 @@ func CreateIssue(ctx context.Context, desc, title, gitlabBaseUrl, gitlabToken st
 	req, err := http.NewRequestWithContext(ctx, "POST", gitLabUrlForAddingIssues, nil)
 	if err != nil {
 		log.Printf("[ERROR]: error while POST request: %v\n", err)
-		return err
+		return "", err
 	}
 	req.Header.Set("PRIVATE-TOKEN", gitlabToken)
 
@@ -32,7 +37,7 @@ func CreateIssue(ctx context.Context, desc, title, gitlabBaseUrl, gitlabToken st
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Printf("[ERROR]: error while POST request: %v\n", err)
-		return err
+		return "", err
 	}
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
@@ -43,8 +48,16 @@ func CreateIssue(ctx context.Context, desc, title, gitlabBaseUrl, gitlabToken st
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("[ERROR]: error while io.ReadAll: %v\n", err)
-		return err
+		return "", err
 	}
 	log.Printf("[RESPONSE BODY FROM GITLAB]: %v\n", string(body))
-	return nil
+
+	var v GitlabResponse
+
+	err = json.Unmarshal(body, &v)
+	if err != nil {
+		return "", err
+	}
+
+	return v.Url, nil
 }
