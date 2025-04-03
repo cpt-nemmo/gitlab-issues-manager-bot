@@ -86,7 +86,7 @@ func ViewCmdStatistics() bot.ViewFunc {
 		}
 
 		// Отправка пользователю
-		msg := tgbotapi.NewPhoto(update.Message.Chat.ID, tgbotapi.FileBytes{
+		msg := tgbotapi.NewPhoto(update.Message.Chat.ID, update.Message.MessageThreadID, tgbotapi.FileBytes{
 			Name:  "pie.png",
 			Bytes: buf.Bytes(),
 		})

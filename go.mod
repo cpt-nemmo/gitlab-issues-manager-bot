@@ -3,7 +3,7 @@ module test
 go 1.24.1
 
 require (
-	github.com/cpt-nemmo/telegram-bot-api v0.0.2
+	github.com/cpt-nemmo/telegram-bot-api v1.0.0
 	github.com/joho/godotenv v1.5.1
 	github.com/wcharczuk/go-chart v2.0.1+incompatible
 	go.uber.org/zap v1.27.0
