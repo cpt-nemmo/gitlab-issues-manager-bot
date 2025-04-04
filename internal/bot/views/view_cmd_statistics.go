@@ -74,8 +74,8 @@ func ViewCmdStatistics() bot.ViewFunc {
 			Width:  512,
 			Height: 512,
 			Values: []chart.Value{
-				{Value: float64(openedIssues), Label: fmt.Sprintf("Active :: %.2f%", openedIssuesProcent)},
-				{Value: float64(closedIssues), Label: fmt.Sprintf("Closed :: %.2f%", closedIssuesProcent)},
+				{Value: float64(openedIssuesProcent), Label: "Active"},
+				{Value: float64(closedIssuesProcent), Label: "Closed"},
 			},
 		}
 
