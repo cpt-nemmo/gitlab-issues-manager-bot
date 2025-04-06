@@ -89,6 +89,10 @@ func handleText(
 	switch b.ChatState {
 	case constants.DEFAULT_CHAT_STATE:
 		if strings.Contains(text, "#issue") {
+			if !strings.Contains(text, utils.START) || !strings.Contains(text, utils.END) {
+				err := message_sender.SendHTML("❗<b>ОШИБКА</b>❗\n️Проверьте - совпадает ли ваше сообшение правилам оформления исуйки в тг.", b.Api, update)
+				return err
+			}
 			issue, err := utils.ParseIssue(text)
 			if err != nil {
 				log.Printf("[ERROR] parse issue: %v", err)
